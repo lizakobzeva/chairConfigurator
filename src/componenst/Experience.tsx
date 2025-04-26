@@ -3,8 +3,12 @@ import {
   PresentationControls,
   Stage,
 } from "@react-three/drei";
+import { useLoader } from "@react-three/fiber";
+import { Suspense } from "react";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const Experience = () => {
+  const gltf = useLoader(GLTFLoader, "./public/models/scene.gltf");
   return (
     <PresentationControls
       speed={1.5}
@@ -15,16 +19,14 @@ const Experience = () => {
       <Stage
         shadows={false}
         environment="city"
-        intensity={0.6}
+        intensity={0.3}
         castShadow={false}
       >
-        {/* <Chair /> */}
-        <mesh position-y={0} scale={2}>
-          <boxGeometry />
-          <meshNormalMaterial />
-        </mesh>
+        <Suspense fallback={null}>
+          <primitive object={gltf.scene} scale={1} position-y={0} />
+        </Suspense>
       </Stage>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position-y={-1}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position-y={-0.06}>
         <planeGeometry args={[170, 170]} />
         <MeshReflectorMaterial
           blur={[300, 100]}
@@ -35,7 +37,7 @@ const Experience = () => {
           depthScale={1.2}
           minDepthThreshold={0.4}
           maxDepthThreshold={1.4}
-          color="#101010"
+          color="#13191B"
           metalness={0.5}
           mirror={0}
         />
